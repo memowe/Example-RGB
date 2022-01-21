@@ -4,8 +4,7 @@ import Test.Tasty ( testGroup )
 import Test.Tasty.HUnit ( testCase, (@?=) )
 import RGB
 
-color:: RGB Int
-color = RGB 17 37 42
+color = RGB 17 37 42 :: RGB Int
 
 testApplicativeFunctor = testGroup "Applicative functor"
   [ testCase "Functor" $ fmap succ color @?= RGB 18 38 43

@@ -94,7 +94,7 @@ parseRGB = fmap fst . listToMaybe . reverse . readP_to_S parse
                     g <- comp
                     b <- comp
                     return $ RGB r g b
-        comp =  do  d1 <- digit
+        comp  = do  d1 <- digit
                     d2 <- digit
                     return $ d1 * 16 + d2
         digit = do  digChar <- satisfy (`elem` "0123456789abcdef")
