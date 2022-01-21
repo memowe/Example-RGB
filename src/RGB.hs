@@ -127,7 +127,7 @@ fromImageList = mapM $ mapM fromList
 greyScale :: RGB Int -> RGB Int
 greyScale (RGB r g b) = let compSum = fromIntegral (r+g+b)
                             average = round (compSum / 3)
-                        in  RGB average average average
+                        in  pure average
 
 -- | Application of 'greyScale' to each @'RGB' 'Int'@ pixel of an 'Image'
 color2grey :: Image -> Image
