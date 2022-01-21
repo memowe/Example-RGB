@@ -2,8 +2,8 @@ cabal-version:      3.0
 name:               RGB
 version:            0.1.0.0
 synopsis:           RGB color handling library
-homepage:           https://mirko.westermeier.de/RGB/RGB.html
-bug-reports:        https://github.com/memowe/RGB/issues
+homepage:           https://mirko.westermeier.de/Example-RGB/RGB.html
+bug-reports:        https://github.com/memowe/Example-RGB/issues
 license:            MIT
 license-file:       LICENSE
 author:             Mirko Westermeier
