@@ -3,7 +3,6 @@ module RGB.TestCodewars (testCodewars) where
 import Test.Tasty ( testGroup )
 import Test.Tasty.HUnit ( testCase, (@?=) )
 import Test.Tasty.QuickCheck ( testProperty )
-import Test.QuickCheck ( collect )
 import RGB.Test
 import RGB
 
@@ -24,10 +23,8 @@ expectedGrey          = map greyLine
 
 testRandomTests = testGroup "Random image tests"
   [ testProperty "Grey scale images" $ \img ->
-      collect (dimensions img) $
       color2grey img == expectedGrey img
   ]
-  where dimensions = (++ "px") . show . sum . map length
 
 testCodewars = testGroup "Codewars tests"
   [ testSampleTests
