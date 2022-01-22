@@ -78,11 +78,11 @@ fromList [r, g, b]  = Just $ RGB r g b
 fromList _          = Nothing
 
 -- | Hexadecimal color representation for 'printf'able components. For
--- @'RGB' 'Int'@ it is the inverse of 'parseRGB' (modulo 'Maybe'):
+-- values between 0 and 255 it is the inverse of 'parseRGB' (modulo 'Maybe'):
 --
 -- prop> showHex (fromJust $ parseRGB $ "#11252a")  ==  "#11252a"
 showHex :: PrintfArg a => RGB a -> String
-showHex (RGB r g b) = printf "#%x%x%x" r g b
+showHex (RGB r g b) = printf "#%02x%02x%02x" r g b
 
 -- | Parse @'RGB' 'Int'@ values from hexadecimal strings like @#aabbcc@.
 --
