@@ -20,15 +20,19 @@ library
     default-language: Haskell2010
 
 test-suite RGB-test
-    default-language: Haskell2010
-    type:             exitcode-stdio-1.0
+    default-language:   Haskell2010
+    default-extensions: FlexibleInstances
+    type:               exitcode-stdio-1.0
     other-modules:
+        RGB.Test,
         RGB.TestRGB,
         RGB.TestCodewars
-    hs-source-dirs:   test
-    main-is:          tests.hs
+    hs-source-dirs:     test
+    main-is:            tests.hs
     build-depends:
         base,
         RGB,
         tasty,
-        tasty-hunit
+        tasty-hunit,
+        tasty-quickcheck,
+        QuickCheck

@@ -2,7 +2,8 @@ module RGB.TestCodewars (testCodewars) where
 
 import Test.Tasty ( testGroup )
 import Test.Tasty.HUnit ( testCase, (@?=) )
-
+import Test.Tasty.QuickCheck ( testProperty )
+import RGB.Test
 import RGB
 
 testSampleTests = testGroup "Sample tests"
@@ -13,7 +14,19 @@ testSampleTests = testGroup "Sample tests"
   , testCase "5" $ color2grey' [[[230,26,161],[30,123,138],[83,90,173],[114,36,186],[109,215,130]],[[23,25,149],[60,134,191],[220,120,113],[85,94,3],[85,137,249]],[[124,159,226],[248,32,241],[130,111,112],[155,178,200],[19,65,115]],[[195,83,134],[202,178,248],[138,144,232],[84,182,33],[106,101,249]],[[227,59,3],[101,237,48],[70,98,73],[78,133,234],[124,117,98]],[[251,255,230],[229,205,48],[0,28,126],[87,28,92],[187,124,43]]] @?= Just [[[139,139,139],[97,97,97],[115,115,115],[112,112,112],[151,151,151]],[[66,66,66],[128,128,128],[151,151,151],[61,61,61],[157,157,157]],[[170,170,170],[174,174,174],[118,118,118],[178,178,178],[66,66,66]],[[137,137,137],[209,209,209],[171,171,171],[100,100,100],[152,152,152]],[[96,96,96],[129,129,129],[80,80,80],[148,148,148],[113,113,113]],[[245,245,245],[161,161,161],[51,51,51],[69,69,69],[118,118,118]]]
   ]
 
+expectedGrey :: Image -> Image
+expectedGrey          = map greyLine
+  where greyLine      = map greyPixel
+        greyPixel col = pure $ round $ sum $ map (comp . ($ col)) components
+        comp          = (/3) . fromIntegral
+        components    = [red, green, blue]
+
+testRandomTests = testGroup "Random image tests"
+  [ testProperty "Grey scale images" $ \img ->
+      color2grey img == expectedGrey img
+  ]
+
 testCodewars = testGroup "Codewars tests"
   [ testSampleTests
-  -- testRandomTests
+  , testRandomTests
   ]
