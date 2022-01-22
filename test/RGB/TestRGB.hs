@@ -2,6 +2,8 @@ module RGB.TestRGB (testBasics) where
 
 import Test.Tasty ( testGroup )
 import Test.Tasty.HUnit ( testCase, (@?=) )
+import Test.Tasty.QuickCheck ( testProperty )
+import RGB.Test
 import RGB
 
 color = RGB 17 37 42 :: RGB Int
@@ -12,9 +14,11 @@ testApplicativeFunctor = testGroup "Applicative functor"
   ]
 
 testListConversion = testGroup "List conversion"
-  [ testCase "RGB to list" $ toList color @?= [17, 37, 42]
+  [ testProperty "RGB to list" $ \col@(RGB r g b) ->
+      [r, g, b] == (toList col :: [Int])
+  , testProperty "List to RGB: three elements" $ \col@(RGB r g b) ->
+      fromList [r, g, b] == Just (col :: RGB Int)
   , testCase "List to RGB: two elements" $ fromList [17, 42] @?= Nothing
-  , testCase "List to RGB: three elements" $ fromList [17, 37, 42] @?= Just color
   ]
 
 testStringConversion = testGroup "String conversion"
@@ -22,20 +26,15 @@ testStringConversion = testGroup "String conversion"
   , testCase "Show hex" $ showHex color @?= "#11252a"
   , testCase "Read hex: crap" $ parseRGB "crap" @?= Nothing
   , testCase "Read hex: correct" $ parseRGB "#11252a" @?= Just color
+  , testProperty "parse . hex roundtrip" $ \col ->
+      parseRGB (showHex col) == Just (col :: RGB Int)
   ]
 
-image = [ [ RGB 1 2 3, RGB 4 5 6 ]
-        , [ RGB 7 8 9, RGB 0 4 2 ]
-        ]
-
-imageL =  [ [ [1,2,3], [4,5,6] ]
-          , [ [7,8,9], [0,4,2] ]
-          ]
-
 testImages = testGroup "Image handling"
-  [ testCase "Image to list" $ toImageList image @?= imageL
-  , testCase "List to image with nothing" $ fromImageList (imageL ++ [[[42]]]) @?= Nothing
-  , testCase "List to image" $ fromImageList imageL @?= Just image
+  [ testProperty "Image to list" $ \img ->
+      toImageList img == map (map toList) img
+  , testProperty "List to image" $ \img ->
+      fromImageList (map (map toList) img) == Just img
   ]
 
 testBasics = testGroup "Basic tests"
