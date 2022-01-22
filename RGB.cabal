@@ -24,6 +24,7 @@ test-suite RGB-test
     default-extensions: FlexibleInstances
     type:               exitcode-stdio-1.0
     other-modules:
+        RGB.Test,
         RGB.TestRGB,
         RGB.TestCodewars
     hs-source-dirs:     test

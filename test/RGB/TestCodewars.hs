@@ -1,10 +1,10 @@
-{-# LANGUAGE FlexibleInstances #-}
 module RGB.TestCodewars (testCodewars) where
 
 import Test.Tasty ( testGroup )
 import Test.Tasty.HUnit ( testCase, (@?=) )
-import Test.Tasty.QuickCheck ( testProperty, choose, Arbitrary(..) )
+import Test.Tasty.QuickCheck ( testProperty )
 import Test.QuickCheck ( collect )
+import RGB.Test
 import RGB
 
 testSampleTests = testGroup "Sample tests"
@@ -21,10 +21,6 @@ expectedGrey          = map greyLine
         greyPixel col = pure $ round $ sum $ map (comp . ($ col)) components
         comp          = (/3) . fromIntegral
         components    = [red, green, blue]
-
-instance Arbitrary (RGB Int) where
-  arbitrary = RGB <$> i256 <*> i256 <*> i256
-    where i256 = choose (0, 255)
 
 testRandomTests = testGroup "Random image tests"
   [ testProperty "Grey scale images" $ \img ->
